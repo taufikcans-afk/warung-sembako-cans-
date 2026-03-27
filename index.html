@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Daftar Harga Warung</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      font-size: 28px;
+    }
+    input {
+      padding: 14px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 18px;
+    }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px;
+      border-bottom: 1px solid #ddd;
+      font-size: 20px;
+    }
+    .harga {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📦 Daftar Harga</h2>
+
+    <input type="text" id="search" placeholder="🔍 Cari barang..." onkeyup="cariBarang()">
+
+    <div id="listBarang"></div>
+  </div>
+
+  <script>
+    const barangList = [
+      { nama: "Magnum Bintang sebungkus", harga: 26000 },
+      { nama: "Magnum Bintang setengah (6 btg)", harga: 13000 },
+      { nama: "Magnum Bintang perbatang", harga: 2500 },
+      { nama: "Gudang Garam Filter sebungkus", harga: 28000 },
+      { nama: "Gudang Garam Filter setengah (6 btg)", harga: 14000 },
+      { nama: "Gudang Garam Filter perbatang", harga: 2500 },
+      { nama: "Samsoe sebungkus", harga: 22000 },
+      { nama: "Samsoe setengah (6 btg)", harga: 11000 },
+      { nama: "Samsoe perbatang", harga: 2500 },
+      { nama: "Sampoerna Kretek sebungkus", harga: 18000 },
+      { nama: "Sampoerna Kretek setengah (6 btg)", harga: 9000 },
+      { nama: "Sampoerna Kretek perbatang", harga: 1500 },
+      { nama: "Djarum Super sebungkus", harga: 26000 },
+      { nama: "Djarum Super setengah (6 btg)", harga: 14000 },
+      { nama: "Djarum Super perbatang", harga: 2500 },
+      { nama: "Rinso bubuk", harga: 1000 },
+      { nama: "Rinso cair", harga: 1000 },
+      { nama: "Sabun batang Giv", harga: 4000 },
+      { nama: "Sabun colek", harga: 2000 },
+      { nama: "Sunlight", harga: 2000 },
+      { nama: "Downy pewangi", harga: 1000 },
+      { nama: "Semua sampo", harga: 1000 },
+      { nama: "Masako ayam", harga: 1000 },
+      { nama: "Masako sapi", harga: 1000 },
+      { nama: "Royco ayam", harga: 1000 },
+      { nama: "Royco sapi", harga: 1000 },
+      { nama: "Racik sop", harga: 2000 },
+      { nama: "Racik sayur asem", harga: 2000 },
+      { nama: "Kecap Bango", harga: 1000 },
+      { nama: "Sasa micin", harga: 1000 },
+      { nama: "Garam", harga: 5000 },
+      { nama: "Kara santan", harga: 6000 },
+      { nama: "Indomie goreng mentah", harga: 3500 },
+      { nama: "Indomie soto mentah", harga: 3500 },
+      { nama: "Sofel", harga: 1000 },
+      { nama: "Kingkong 1 pak", harga: 7000 },
+      { nama: "Kingkong ketengan", harga: 2000 },
+      { nama: "Gunung gelas", harga: 500 },
+      { nama: "Gunung gelas sekerdus", harga: 22000 },
+      { nama: "Gunung botol 600ml", harga: 2000 },
+      { nama: "Gunung gede 1600ml", harga: 4000 },
+      { nama: "Vit botol", harga: 3000 },
+      { nama: "Vit gelas sekardus", harga: 25000 },
+      { nama: "Vit gede 1600ml", harga: 5000 },
+      { nama: "Le Minerale", harga: 3000 },
+      { nama: "Aqua botol 600ml", harga: 3000 },
+      { nama: "Aqua botol gede 1500ml", harga: 7000 },
+      { nama: "Teh pucuk", harga: 4000 },
+      { nama: "Teh botol", harga: 5000 },
+      { nama: "Mizone", harga: 5000 },
+      { nama: "You C botol", harga: 7000 },
+      { nama: "You C kaca", harga: 7000 },
+      { nama: "Kratingdaeng", harga: 7000 },
+      { nama: "Golda", harga: 4000 },
+      { nama: "Nipis madu", harga: 5000 },
+      { nama: "Yakult", harga: 3000 },
+      { nama: "Granita", harga: 2000 },
+      { nama: "Isocup", harga: 2000 },
+      { nama: "Torpedo XL", harga: 2000 },
+      { nama: "Ale-ale", harga: 1000 },
+      { nama: "Teh Rio", harga: 1000 },
+      { nama: "Teh Calista", harga: 2500 },
+      { nama: "Kapal Api + gula", harga: 2000 },
+      { nama: "Kapal Api tanpa gula", harga: 1000 },
+      { nama: "ABC susu", harga: 2000 },
+      { nama: "Indocafe", harga: 2000 },
+      { nama: "Luwak White Coffee", harga: 2000 },
+      { nama: "Good Day Cappuccino", harga: 2500 },
+      { nama: "Good Day Latte Butterscotch", harga: 2500 },
+      { nama: "Susu putih", harga: 2000 },
+      { nama: "Susu coklat", harga: 2000 },
+      { nama: "Ultraflu 4 biji", harga: 4000 },
+      { nama: "Ultraflu perbiji", harga: 1000 },
+      { nama: "Paramex 4 biji", harga: 4000 },
+      { nama: "Paramex perbiji", harga: 1000 },
+      { nama: "Neoremasil", harga: 1000 },
+      { nama: "Bodrex", harga: 1000 },
+      { nama: "Bodrex Extra", harga: 1000 },
+      { nama: "Bodrexin anak", harga: 1000 },
+      { nama: "Promag", harga: 1000 },
+      { nama: "Diapet", harga: 1000 },
+      { nama: "Panadol", harga: 2000 },
+      { nama: "Koyo Salonpas", harga: 1000 },
+      { nama: "Hansaplast", harga: 1000 },
+      { nama: "Obat sakit gigi", harga: 7000 },
+      { nama: "Tolak angin", harga: 5000 },
+      { nama: "Puyer Bintang Tujuh", harga: 1000 },
+      { nama: "Katenbat", harga: 1000 },
+      { nama: "Pulpen", harga: 2000 },
+      { nama: "Spidol", harga: 2000 },
+      { nama: "Baterai ABC AAA (2 biji)", harga: 6000 },
+      { nama: "Baterai besar", harga: 1000 },
+      { nama: "Silet", harga: 1000 }
+    ];
+
+    function tampilkanBarang(data) {
+      const list = document.getElementById("listBarang");
+      list.innerHTML = "";
+      data.forEach(item => {
+        list.innerHTML += `
+          <div class="item">
+            <span>${item.nama}</span>
+            <span class="harga">Rp ${item.harga}</span>
+          </div>
+        `;
+      });
+    }
+
+    function cariBarang() {
+      const keyword = document.getElementById("search").value.toLowerCase();
+      const hasil = barangList.filter(item =>
+        item.nama.toLowerCase().includes(keyword)
+      );
+      tampilkanBarang(hasil);
+    }
+
+    tampilkanBarang(barangList);
+  </script>
+</body>
+</html>
